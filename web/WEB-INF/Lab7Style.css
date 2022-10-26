@@ -1,0 +1,72 @@
+/*Lab7 JDBC style sheet*/
+
+/*General style*/
+body {
+    background-color: rgb(45, 45, 45);
+    color: #d2d2d2;
+    font-family: Arial, Helvetica, sans-serif;
+    font-size: 12px;
+    margin: 0px;
+    padding: 0px;
+}
+
+/*Header style*/
+h2 {
+    color: #d2d2d2;
+    font-size: 18px;
+    font-weight: bold;
+    padding: 10px;
+    text-align: center;
+}
+
+/*table style*/
+table {
+    border: 1px solid #6c6b6b;
+    border-collapse: collapse;
+    width: 80%;
+    margin: 0 auto;
+}
+
+table th {
+    font-size: 14px;
+    font-weight: bold;
+}
+
+table td {
+    font-size: 12px;
+}
+
+/*table add*/
+table.add {
+    width: 30%;
+    margin: 0 auto;
+}
+
+table.add td {
+    padding: 1px;
+    width: 100%;
+}
+/*role style*/
+.drop {
+    color: #0c0b0b;
+    font-size: 12px;
+    text-align: left;
+    padding: 3px;
+    width: auto;
+    text-transform: capitalize;
+}
+
+/*button style*/
+input[type="submit"] {
+    background-color: #d2d2d2;
+    border: 1px solid #6c6b6b;
+    color: #0c0b0b;
+    font-size: 12px;
+    padding: 3px;
+    width: 100%;
+}
+/*button hover style*/
+input[type="submit"]:hover {
+    background-color: #30862a;
+    color: #d2d2d2;
+}
