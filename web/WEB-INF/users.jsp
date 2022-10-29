@@ -35,16 +35,36 @@
                         <td>${user.first_name}</td>
                         <td>${user.last_name}</td>
                         <td>${user.role}</td>
-                        <td><a href="editUser.jsp?email=${user.email}">Edit</a></td>
-                        <td><a href="user?action=delete&amp;email=${user.email}">Delete</a></td>
+                        <td>
+                            <form action="user" method="get">
+                                <input type="hidden" name="action" value="edit">
+                                <input type="hidden" name="email" value="${user.email}">
+                                <input type="submit" value="Edit">
+                            </form>
+                        </td>
+                        <td>
+                            <form action="user" method="post">
+                                <input type="hidden" name="action" value="delete">
+                                <input type="hidden" name="email" value="${user.email}">
+                                <input type="submit" value="Delete">
+                            </form>
+                        </td>
                     </tr>
                 </c:forEach>
             </table>
+            <br>
+        <a href="user?action=addUser">Add User</a>
+<%--            <c:if test="${action ne null}">--%>
             <p>${message}</p>
-            <p>${messageADE}</p>
+            <p id="ade">${messageADE}</p>
+<%--            </c:if>--%>
         </div>
-    <div>
-        <h2>Add User</h2>
+    <c:if test="${action ne null}">
+        <div>
+        <h2>
+        <c:if test="${action eq 'addUser'}">Add User</c:if>
+        <c:if test="${action ne 'addUser'}">Edit User</c:if>
+        </h2>
         <form action="user" method="POST">
             <table class="add">
                 <tr>
@@ -56,12 +76,12 @@
                 <tr>
                     <td><input type="text" name="last_name" placeholder="Last Name" value="${last_name}"/></td>
                 </tr>
-                <tr>
-                    <td><input type="password" name="password" placeholder="Password" value="${password}"/></td>
-                </tr>
+                    <tr>
+                        <td><input type="text" name="password" placeholder="Password" value="${password}"/></td>
+                    </tr>
                 <tr>
                     <td>
-                        <select name="role" placeholder="Role" class="drop">
+                        <select name="role" class="drop">
                             <c:forEach items="${roles}" var="role">
                                 <option value="${role.id}">${role.role}</option>
                             </c:forEach>
@@ -69,12 +89,23 @@
                     </td>
                 </tr>
                 <tr>
+                <c:if test="${action eq 'addUser'}">
                     <td><input type="submit" value="Add User" /></td>
                     <td><input type="hidden" name="action" value="add" /></td>
+                </c:if>
+                <c:if test="${action ne 'addUser'}">
+                    <td><input type="submit" value="Update" /></td>
+                    <td><input type="hidden" name="action" value="update" /></td>
                 </tr>
+                <tr>
+                    <td><input type="submit" value="Cancel"/></td>
+                    <td><input type="hidden" name="action" value="cancel" /></td>
+                </tr>
+                </c:if>
             </table>
         </form>
         <p>${message2}</p>
     </div>
+    </c:if>
     </body>
 </html>

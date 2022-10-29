@@ -5,7 +5,6 @@
 package servlets;
 
 import java.io.IOException;
-import java.io.PrintWriter;
 import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -42,6 +41,32 @@ public class UserServlet extends HttpServlet {
             request.setAttribute("messageGet", ex.getMessage());
         }
 
+        String action = request.getParameter("action");
+        if (action != null && action.equals("addUser")) {
+            try {
+                request.setAttribute("action", "addUser");
+            } catch (Exception ex) {
+                Logger.getLogger(UserServlet.class.getName()).log(Level.SEVERE, null, ex);
+                request.setAttribute("message", ex.getMessage());
+            }
+        }
+
+        if (action != null && action.equals("edit")) {
+            try {
+                request.setAttribute("action", "edit");
+                String email = request.getParameter("email");
+                User user = us.get(email);
+                request.setAttribute("email", user.getEmail());
+                request.setAttribute("first_name", user.getFirst_name());
+                request.setAttribute("last_name", user.getLast_name());
+                request.setAttribute("password", user.getPassword());
+                request.setAttribute("role", user.getRole());
+            } catch (Exception ex) {
+                Logger.getLogger(UserServlet.class.getName()).log(Level.SEVERE, null, ex);
+                request.setAttribute("message", ex.getMessage());
+            }
+        }
+
 
         request.getRequestDispatcher("/WEB-INF/users.jsp").forward(request, response);
     }
@@ -53,61 +78,104 @@ public class UserServlet extends HttpServlet {
 
         UserService us = new UserService();
         RoleService rs = new RoleService();
-
-        //input validation
+        User user = new User();
+        String action = request.getParameter("action");
         String email = request.getParameter("email");
         boolean active = false;
         String firstname = request.getParameter("first_name");
         String lastname = request.getParameter("last_name");
         String password = request.getParameter("password");
-        int roleId = Integer.parseInt(request.getParameter("role"));
+        String roleId = request.getParameter("role");
+        //add, delete edit user
+        try {
+            switch (action) {
+                case "add":
 
-        if (email == null || email.isEmpty() ||
-                firstname == null || firstname.isEmpty() ||
-                lastname == null || lastname.isEmpty() ||
-                password == null || password.isEmpty())
-        {
-            request.setAttribute("message2", "Please fill out all fields");
+                    //input validation
+                    if (email == null || email.isEmpty() ||
+                            firstname == null || firstname.isEmpty() ||
+                            lastname == null || lastname.isEmpty() ||
+                            password == null || password.isEmpty())
+                    {
+                        request.setAttribute("message2", "Please fill out all fields");
+                        try {
+                            List<User> users = us.getAll();
+                            List<Role> roles = rs.getAll();
+                            request.setAttribute("users", users);
+                            request.setAttribute("roles", roles);
+                        } catch (Exception ex) {
+                            Logger.getLogger(UserServlet.class.getName()).log(Level.SEVERE, null, ex);
+                            request.setAttribute("message", ex.getMessage());
+                        }
+                        request.setAttribute("first_name", firstname);
+                        request.setAttribute("last_name", lastname);
+                        request.setAttribute("email", email);
+                        request.setAttribute("password", password);
+                        request.setAttribute("action", "addUser");
+                        request.getRequestDispatcher("/WEB-INF/users.jsp").forward(request, response);
+                        return;
+                    }
+                    user = new User(email, active, firstname, lastname, password, Integer.parseInt(roleId));
+                    us.insert(user);
+                    request.setAttribute("messageADE", "User: "+email+" added successfully!");
+                    break;
+                case "update":
+
+                    //input validation
+                    if (email == null || email.isEmpty() ||
+                            firstname == null || firstname.isEmpty() ||
+                            lastname == null || lastname.isEmpty() ||
+                            password == null || password.isEmpty())
+                    {
+                        request.setAttribute("message2", "Please fill out all fields");
+                        try {
+                            List<User> users = us.getAll();
+                            List<Role> roles = rs.getAll();
+                            request.setAttribute("users", users);
+                            request.setAttribute("roles", roles);
+                        } catch (Exception ex) {
+                            Logger.getLogger(UserServlet.class.getName()).log(Level.SEVERE, null, ex);
+                            request.setAttribute("message", ex.getMessage());
+                        }
+                        request.setAttribute("first_name", firstname);
+                        request.setAttribute("last_name", lastname);
+                        request.setAttribute("email", email);
+                        request.setAttribute("password", password);
+                        request.setAttribute("action", "update");
+                        request.getRequestDispatcher("/WEB-INF/users.jsp").forward(request, response);
+                        return;
+                    }
+                    user = new User(email, active, firstname, lastname, password, Integer.parseInt(roleId));
+                    us.update(user);
+                    request.setAttribute("messageADE", "User: "+email+" updated successfully!");
+                    break;
+                case "delete":
+                    us.delete(email);
+                    request.setAttribute("messageADE", "Account "+email+" deleted!");
+                    break;
+                case "cancel":
+                    request.setAttribute("action", null);
+                    break;
+            }
+        } catch (Exception ex) {
+            Logger.getLogger(UserServlet.class.getName()).log(Level.SEVERE, null, ex);
+            request.setAttribute("message2", ex.getMessage());
             try {
                 List<User> users = us.getAll();
                 List<Role> roles = rs.getAll();
                 request.setAttribute("users", users);
                 request.setAttribute("roles", roles);
-            } catch (Exception ex) {
-                Logger.getLogger(UserServlet.class.getName()).log(Level.SEVERE, null, ex);
-                request.setAttribute("message", "error");
+            } catch (Exception ex2) {
+                Logger.getLogger(UserServlet.class.getName()).log(Level.SEVERE, null, ex2);
+                request.setAttribute("message", ex2.getMessage());
             }
             request.setAttribute("first_name", firstname);
             request.setAttribute("last_name", lastname);
             request.setAttribute("email", email);
             request.setAttribute("password", password);
+            request.setAttribute("action", "addUser");
             request.getRequestDispatcher("/WEB-INF/users.jsp").forward(request, response);
             return;
-        }
-
-        User user = new User(email, active, firstname, lastname, password, roleId);
-
-        String action = request.getParameter("action");
-        //add, delete edit user
-        try {
-            switch (action) {
-                case "add":
-                    us.insert(user);
-                    break;
-                case "edit":
-                    us.update(user);
-                    break;
-                case "delete":
-                    us.delete(email);
-                    break;
-            }
-        } catch (Exception ex) {
-            Logger.getLogger(UserServlet.class.getName()).log(Level.SEVERE, null, ex);
-            request.setAttribute("messageADE", ex.getMessage());
-            request.setAttribute("first_name", firstname);
-            request.setAttribute("last_name", lastname);
-            request.setAttribute("email", email);
-            request.setAttribute("password", password);
         }
 
         try {
@@ -117,9 +185,8 @@ public class UserServlet extends HttpServlet {
             request.setAttribute("roles", roles);
         } catch (Exception ex) {
             Logger.getLogger(UserServlet.class.getName()).log(Level.SEVERE, null, ex);
-            request.setAttribute("message", "error");
+            request.setAttribute("message", "m"+ex.getMessage());
         }
-        request.setAttribute("messageADE", "Deleted");
         request.getRequestDispatcher("/WEB-INF/users.jsp").forward(request, response);
 
 
