@@ -58,6 +58,7 @@ public class UserServlet extends HttpServlet {
                 User user = us.get(email);
 
                 request.setAttribute("email", user.getEmail());
+                request.setAttribute("status", user.isActive());
                 request.setAttribute("first_name", user.getFirst_name());
                 request.setAttribute("last_name", user.getLast_name());
                 request.setAttribute("password", user.getPassword());
@@ -82,7 +83,7 @@ public class UserServlet extends HttpServlet {
         User user = new User();
         String action = request.getParameter("action");
         String email = request.getParameter("email");
-        boolean active = Boolean.parseBoolean(request.getParameter("activeStat"));
+        boolean active = Boolean.parseBoolean(request.getParameter("status"));
         String firstname = request.getParameter("first_name");
         String lastname = request.getParameter("last_name");
         String password = request.getParameter("password");
@@ -112,6 +113,7 @@ public class UserServlet extends HttpServlet {
                         request.setAttribute("last_name", lastname);
                         request.setAttribute("email", email);
                         request.setAttribute("password", password);
+                        request.setAttribute("status", active);
                         request.setAttribute("action", "addUser");
                         request.getRequestDispatcher("/WEB-INF/users.jsp").forward(request, response);
                         return;
@@ -141,6 +143,7 @@ public class UserServlet extends HttpServlet {
                         request.setAttribute("last_name", lastname);
                         request.setAttribute("email", email);
                         request.setAttribute("password", password);
+                        request.setAttribute("status", active);
                         request.setAttribute("action", "update");
                         request.getRequestDispatcher("/WEB-INF/users.jsp").forward(request, response);
                         return;
@@ -175,6 +178,7 @@ public class UserServlet extends HttpServlet {
             request.setAttribute("last_name", lastname);
             request.setAttribute("email", email);
             request.setAttribute("password", password);
+            request.setAttribute("status", active);
             request.setAttribute("action", "addUser");
             request.getRequestDispatcher("/WEB-INF/users.jsp").forward(request, response);
             return;

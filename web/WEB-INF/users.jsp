@@ -31,7 +31,7 @@
                 <c:forEach items="${users}" var="user">
                     <tr>
                         <td>${user.email}</td>
-                        <td><input type="checkbox" name="status" value="${user.active}" <c:if test="${user.active}">checked</c:if>>active</td>
+                        <td>${user.active ? 'Active' : 'Inactive'}</td>
                         <td>${user.first_name}</td>
                         <td>${user.last_name}</td>
                         <td class="roleText"><c:forEach items="${roles}" var="role">
@@ -75,7 +75,7 @@
                 <c:if test="${action eq 'addUser'}">
                 <tr>
                     <td>
-                        <input type="radio" name="activeStat" value="true">Active
+                        <input type="checkbox" name="status" value="true">Active
                     </td>
                 </tr>
                     <tr>
@@ -94,6 +94,11 @@
                 </c:if>
                 <c:if test="${action ne 'addUser'}">
                     <input type="hidden" name="email" value="${email}">
+                    <tr>
+                        <td colspan="2">
+                            <input type="checkbox" name="status" value="true" ${status ? 'checked' : ''}>Active
+                        </td>
+                    </tr>
                     <tr>
                         <td>First Name: </td>
                         <td><input type="text" name="first_name" value="${first_name}"/></td>
@@ -120,22 +125,24 @@
                     </td>
                 </tr>
                 <c:if test="${action eq 'addUser'}">
-                    <td><input type="submit" value="Add User"/></td>
+                    <td colspan="2"><input type="submit" value="Add User"/></td>
                     <td><input type="hidden" name="action" value="add" /></td>
                 </c:if>
                 <c:if test="${action ne 'addUser'}">
+                    <td colspan="2"><input type="submit" value="Update"/></td>
                     <td><input type="hidden" name="action" value="update"/></td>
-                    <td><input type="submit" value="Update"/></td>
                 </c:if>
             </table>
 
             </form>
-        <form action="user" method="post">
-            <input type="hidden" name="action" value="cancel">
-            <input type="submit" value="Cancel" id="BT">
-        </form>
-        <p>${message2}</p>
-    </div>
+            <div id="cancel">
+                <form action="user" method="post">
+                    <input type="submit" value="Cancel">
+                    <input type="hidden" name="action" value="cancel">
+                </form>
+            </div>
+            <p>${message2}</p>
+        </div>
     </c:if>
     </body>
 </html>
