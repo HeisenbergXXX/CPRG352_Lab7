@@ -9,25 +9,30 @@ body {
     margin: 0;
     padding: 0;
 }
+h1 {
+    color: #d2d2d2;
+    font-weight: bold;
+    padding: 6px;
+    margin-left: 10vw;
+}
 
-/*Header style*/
 h2 {
     color: #d2d2d2;
     font-size: 22px;
     font-weight: bold;
     padding: 6px;
-    text-align: center;
+    margin-left: 10vw;
 }
 
 /*table style*/
-table {
+table.main {
     border: 1px solid #6c6b6b;
     border-collapse: collapse;
     width: 80%;
-    margin: 0 auto;
+    margin-left: 10vw;
 }
 
-table th {
+table.main th {
     font-size: 16px;
     font-weight: bold;
     text-align: left;
@@ -35,24 +40,25 @@ table th {
     background-color: #30862a;
     color: #fdfdfd;
 }
+table.main tr:nth-child(odd) {
+    background-color: #525952;
+}
 
-table td {
+table.main td {
     font-size: 14px;
+    width: auto;
 }
 
 /*table add*/
 table.add {
-    width: 30%;
-    margin: 0 auto;
+    width: 27%;
+    margin-left: 10vw;
 }
 
 table.add td {
     padding: 1px;
 }
 
-option {
-    width: 100%;
-}
 
 /*role style*/
 .drop {
@@ -60,7 +66,7 @@ option {
     font-size: 12px;
     text-align: left;
     padding: 3px;
-    width: auto;
+    /*width: auto;*/
     text-transform: capitalize;
 }
 
@@ -75,7 +81,8 @@ input[type="submit"] {
     color: #0c0b0b;
     font-size: 12px;
     padding: 3px;
-    width: 100%;
+    width: 75%;
+
 }
 /*button hover style*/
 input[type="submit"]:hover {
@@ -84,8 +91,7 @@ input[type="submit"]:hover {
 }
 
 p {
-    text-align: center;
-    margin: 0 auto;
+    margin-left: 10vw;
     padding: 10px;
     color: #c50a0a;
     font-size: 18px;
@@ -105,4 +111,9 @@ a {
     padding-top: 5px;
     padding-bottom: 5px;
     width: 100%;
+}
+
+#BT {
+    margin-left: 10.1vw;
+    width: 22vw;
 }

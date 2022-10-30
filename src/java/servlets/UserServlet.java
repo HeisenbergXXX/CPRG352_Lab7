@@ -82,7 +82,7 @@ public class UserServlet extends HttpServlet {
         User user = new User();
         String action = request.getParameter("action");
         String email = request.getParameter("email");
-        boolean active = false;
+        boolean active = Boolean.parseBoolean(request.getParameter("activeStat"));
         String firstname = request.getParameter("first_name");
         String lastname = request.getParameter("last_name");
         String password = request.getParameter("password");
@@ -152,10 +152,11 @@ public class UserServlet extends HttpServlet {
                     break;
                 case "delete":
                     us.delete(email);
-                    request.setAttribute("messageADE", "Account "+email+" deleted!");
+                    request.setAttribute("message", "Account "+email+" deleted!");
                     break;
                 case "cancel":
                     request.setAttribute("action", null);
+                    request.setAttribute("messageADE", "Action cancelled!");
                     break;
             }
         } catch (Exception ex) {
