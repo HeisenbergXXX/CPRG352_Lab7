@@ -56,6 +56,7 @@ public class UserServlet extends HttpServlet {
                 request.setAttribute("action", "edit");
                 String email = request.getParameter("email");
                 User user = us.get(email);
+
                 request.setAttribute("email", user.getEmail());
                 request.setAttribute("first_name", user.getFirst_name());
                 request.setAttribute("last_name", user.getLast_name());
@@ -122,8 +123,7 @@ public class UserServlet extends HttpServlet {
                 case "update":
 
                     //input validation
-                    if (email == null || email.isEmpty() ||
-                            firstname == null || firstname.isEmpty() ||
+                    if (    firstname == null || firstname.isEmpty() ||
                             lastname == null || lastname.isEmpty() ||
                             password == null || password.isEmpty())
                     {
@@ -145,6 +145,7 @@ public class UserServlet extends HttpServlet {
                         request.getRequestDispatcher("/WEB-INF/users.jsp").forward(request, response);
                         return;
                     }
+
                     user = new User(email, active, firstname, lastname, password, Integer.parseInt(roleId));
                     us.update(user);
                     request.setAttribute("messageADE", "User: "+email+" updated successfully!");
