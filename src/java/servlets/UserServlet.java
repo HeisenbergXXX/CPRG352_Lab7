@@ -88,7 +88,7 @@ public class UserServlet extends HttpServlet {
         String lastname = request.getParameter("last_name");
         String password = request.getParameter("password");
         String roleId = request.getParameter("role");
-        //add, delete edit user
+        //add, delete edit user 
         try {
             switch (action) {
                 case "add":
@@ -160,6 +160,7 @@ public class UserServlet extends HttpServlet {
                 case "cancel":
                     request.setAttribute("action", null);
                     request.setAttribute("messageADE", "Action cancelled!");
+                    //request.setAttribute("messageADE", "Bennett");
                     break;
             }
         } catch (Exception ex) {
